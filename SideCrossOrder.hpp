@@ -15,8 +15,16 @@ namespace MyContainerNamespace {
         size_t current_index;
 
     public:
+        /**
+         * @brief Constructor for the SideCrossOrder iterator.
+         * @param cont Reference to the container.
+         * @param pos The starting position (default is 0).
+         */
         explicit SideCrossOrder(const MyContainer<T>& cont, size_t pos = 0)
             : container(cont), current_index(pos) {
+            if (container.empty()) {
+                return;
+            }
             std::vector<size_t> sorted_indices(container.size());
             for (size_t i = 0; i < container.size(); ++i) {
                 sorted_indices[i] = i;
@@ -43,14 +51,22 @@ namespace MyContainerNamespace {
                 take_left = !take_left;
             }
         }
-
+        /**
+         * @brief Access current element.
+         * @return Reference to the current element.
+         * @throw std::out_of_range If out of bounds
+         */
         const T& operator*() const {
             if (current_index >= container.size()) {
                 throw std::out_of_range("Iterator out of bounds");
             }
             return container.getData()[indices[current_index]];
         }
-
+        /**
+         * @brief Pre-increment operator. Advance to next position.
+         * @return Reference after increment.
+         * @throw std::out_of_range If incrementing past end
+         */
         SideCrossOrder& operator++() {
             if (current_index >= container.size()) {
                 throw std::out_of_range("Cannot increment iterator past end");
@@ -58,7 +74,11 @@ namespace MyContainerNamespace {
             ++current_index;
             return *this;
         }
-
+        /**
+         * @brief Post-increment operator. Advance to next position.
+         * @return Copy of the iterator before increment.
+         * @throw std::out_of_range If incrementing past end
+         */
         SideCrossOrder operator++(int) {
             if (current_index >= container.size()) {
                 throw std::out_of_range("Cannot increment iterator past end");
@@ -67,11 +87,19 @@ namespace MyContainerNamespace {
             ++current_index;
             return temp;
         }
-
+        /**
+         * @brief Equality operator.
+         * @param other The other SideCrossOrder to compare with.
+         * @return True if both iterators are equal, false otherwise.
+         */
         bool operator==(const SideCrossOrder& other) const {
             return current_index == other.current_index && &container == &other.container;
         }
-
+        /**
+         * @brief Inequality operator.
+         * @param other The other SideCrossOrder to compare with.
+         * @return True if both iterators are not equal, false otherwise.
+         */
         bool operator!=(const SideCrossOrder& other) const {
             return !(*this == other);
         }

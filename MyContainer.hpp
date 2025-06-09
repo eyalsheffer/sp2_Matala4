@@ -20,23 +20,41 @@ private:
     std::vector<T> data;
 
 public:
+    // Default constructor
     MyContainer() = default;
-    
+    /**
+     * @brief Copy constructor. Creates a copy of another container.
+     * @param other The container to copy from.
+     */
     MyContainer(const MyContainer& other) : data(other.data) {}
-    
+    /**
+     * @brief Assignment operator. Assigns the contents of another container.
+     * @param other The container to assign from.
+     * @return Reference to this container.
+     */
     MyContainer& operator=(const MyContainer& other) {
         if (this != &other) {
             data = other.data;
         }
         return *this;
     }
-    
+   /**
+     * @brief Destructor. Cleans up the container.
+     */
     ~MyContainer() = default;
 
+    /**
+     * @brief Adds an element to the container.
+     * @param element The element to add.
+     */
     void add(const T& element) {
         data.push_back(element);
     }
-
+    /**
+     * @brief Removes an element from the container.
+     * @param element The element to remove.
+     * @throw std::invalid_argument If the element is not found in the container.
+     */
     void remove(const T& element) {
         auto it = std::find(data.begin(), data.end(), element);
         if (it == data.end()) {
@@ -45,29 +63,51 @@ public:
         
         data.erase(std::remove(data.begin(), data.end(), element), data.end());
     }
-
+     /**
+     * @brief Returns the number of elements in the container.
+     * @return The size of the container.
+     */   
     size_t size() const {
         return data.size();
     }
-
+    /**
+     * @brief Checks if the container is empty.
+     * @return True if the container is empty, false otherwise.
+     */
     bool empty() const {
         return data.empty();
     }
 
+    /**
+     * @brief Accesses an element by index (const).
+     * @param index The index of the element.
+     * @return Const reference to the element.
+     * @throw std::out_of_range If the index is out of range.
+     */
     const T& operator[](size_t index) const {
         if (index >= data.size()) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
-
+    /**
+     * @brief Accesses an element by index.
+     * @param index The index of the element.
+     * @return Reference to the element.
+     * @throw std::out_of_range If the index is out of range.
+     */
     T& operator[](size_t index) {
         if (index >= data.size()) {
             throw std::out_of_range("Index out of range");
         }
         return data[index];
     }
-
+    /**
+     * @brief Prints the container to an output stream.
+     * @param os The output stream.
+     * @param container The container to print.
+     * @return Reference to the output stream.
+     */
     friend std::ostream& operator<<(std::ostream& os, const MyContainer& container) {
         os << "[";
         for (size_t i = 0; i < container.data.size(); ++i) {
@@ -79,11 +119,17 @@ public:
         os << "]";
         return os;
     }
-
+    /**
+     * @brief Returns a constant reference to the internal data vector.
+     * @return Const reference to the data vector.
+     */
     const std::vector<T>& getData() const {
         return data;
     }
-
+    /**
+     * @brief Returns a reference to the internal data vector.
+     * @return Reference to the data vector.
+     */
     std::vector<T>& getData() {
         return data;
     }

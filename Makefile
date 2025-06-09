@@ -19,11 +19,11 @@ $(MAIN_TARGET): $(SOURCES) $(HEADERS)
 test: $(TEST_TARGET)
 	./$(TEST_TARGET)
 
-$(TEST_TARGET): test.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) test.cpp
+$(TEST_TARGET): Test/test.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) Test/test.cpp
 
-valgrind: $(MAIN_TARGET)
-	valgrind $(VALGRIND_FLAGS) ./$(MAIN_TARGET)
+valgrind: $(TEST_TARGET)
+	valgrind $(VALGRIND_FLAGS) ./$(TEST_TARGET)
 
 clean:
 	rm -f $(MAIN_TARGET) $(TEST_TARGET) *.o *.gch *~
